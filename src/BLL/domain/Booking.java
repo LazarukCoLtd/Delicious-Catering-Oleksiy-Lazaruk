@@ -22,16 +22,21 @@ public class Booking {
 
     private LocalDateTime bookingTime;
 
-    public Booking(Integer id, String bookingReference, Client client, double bookingPrice, double discount,
-                   Statuses bookingStatus, Event event, LocalDateTime bookingTime) {
+    private Double amountPaid;
+
+    public Booking(Integer id, String bookingReference, Client client, Double bookingPrice, Double discount
+            , Double discountedPrice, Statuses bookingStatus, Event event, LocalDateTime bookingTime
+            , Double amountPaid) {
         this.id = id;
         this.bookingReference = bookingReference;
         this.client = client;
         this.bookingPrice = bookingPrice;
         this.discount = discount;
+        this.discountedPrice = discountedPrice;
         this.bookingStatus = bookingStatus;
         this.event = event;
         this.bookingTime = bookingTime;
+        this.amountPaid = amountPaid;
     }
 
     public Booking() {
@@ -107,5 +112,13 @@ public class Booking {
 
     public void setBookingTime(LocalDateTime bookingTime) {
         this.bookingTime = bookingTime;
+    }
+
+    public Double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(Double amountPaid) {
+        this.amountPaid = amountPaid;
     }
 }

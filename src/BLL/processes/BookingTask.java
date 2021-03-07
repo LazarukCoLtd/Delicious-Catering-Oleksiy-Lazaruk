@@ -5,14 +5,11 @@ import BLL.domain.Event;
 import BLL.domain.Statuses;
 import BLL.util.BusinessRuleViolationException;
 import DAL.dao.BookingDao;
-import DAL.dao.EventDao;
 import DAL.impl.BookingDaoImpl;
-import DAL.impl.EventDaoImpl;
 
 public class BookingTask {
 
     private final BookingDao bookingDao = new BookingDaoImpl();
-    private final EventDao eventDao = new EventDaoImpl();
 
     public Booking createNewBooking(Booking booking) {
         EventTask eventTask = new EventTask();
@@ -22,7 +19,9 @@ public class BookingTask {
         if (newEvent != null) {
             booking.setDiscount(calcDiscountAmount(booking, calcDiscountPercentage(newEvent)));
             booking.setDiscountedPrice(applyDiscount(booking.getBookingPrice(), booking.getDiscount()));
-
+            booking.setBookingStatus(Statuses.UNCONFIRMED);
+            booking.setBookingReference(newBookingReference(booking));
+            bookingDao.insert(booking);
             return booking;
         } else {
             throw new BusinessRuleViolationException("Oops... Something went Wrong! Please try again.");
@@ -43,5 +42,22 @@ public class BookingTask {
 
     private double applyDiscount(Double fullPrice, Double discountedPrice) {
         return fullPrice - discountedPrice;
+    }
+
+    private String newBookingReference(Booking booking) {
+        return booking.getClient().getLastName() + booking.getBookingTime().toString();
+    }
+
+    public Booking findBookingByReference(String bookingReference) {
+        assert (!bookingReference.isEmpty());
+        return bookingDao.findByBookingReference(bookingReference);
+    }
+
+    public Booking payBooking(Booking booking, Integer paymentAmount) {
+        booking.setAmountPaid(booking.getDiscountedPrice() * (paymentAmount / 100));
+        booking.setBookingStatus(Statuses.CONFIRMED);
+        booking.getEvent().setEventStatus(Statuses.CONFIRMED);
+
+        return bookingDao.save(booking);
     }
 }

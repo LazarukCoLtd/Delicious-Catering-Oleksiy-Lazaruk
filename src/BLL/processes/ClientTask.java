@@ -5,6 +5,7 @@ import BLL.util.BusinessRuleViolationException;
 import DAL.dao.ClientDao;
 import DAL.impl.ClientDaoImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ClientTask {
@@ -14,11 +15,19 @@ public class ClientTask {
     public Client createNewClient(Client client) {
         Client clientFromDb = clientDao.findByIDNumber(client.getIDNumber());
         if (clientFromDb == null) {
+            client.setMemberSince(LocalDateTime.now());
             return clientDao.insert(client);
         } else {
             throw new BusinessRuleViolationException(
                     "System cannot complete request. A client with those credentials already exits.");
         }
+    }
+
+    public Client login(String username, String password) {
+        assert (username != null);
+        assert (password != null);
+
+        return clientDao.findByUsernameAndPassword(username, password);
     }
 
     public Client UpdateClient(Client updateClient) {
