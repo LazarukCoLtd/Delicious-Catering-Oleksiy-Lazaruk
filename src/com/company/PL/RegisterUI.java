@@ -32,7 +32,7 @@ public class RegisterUI {
             newClient.setPassword(bufferedReader.readLine());
 
 //        get all contacts
-            newClient.setPassword(System.console().readLine());
+            newClient.setPassword(bufferedReader.readLine());
             boolean newContact;
             List<Contact> contactList = new ArrayList<>();
             do {
@@ -62,21 +62,25 @@ public class RegisterUI {
 
     public Contact getUserContact() {
         Contact contact = new Contact();
-        System.out.println("New Contact");
+        try {
+            System.out.println("New Contact");
 
-        System.out.println("Contact type:\nE. Email\nM. Mobile");
-        String contactType = System.console().readLine();
+            System.out.println("Contact type:\nE. Email\nM. Mobile");
+            String contactType = bufferedReader.readLine();
 
-        System.out.println("Contact:");
-        contact.setContact(System.console().readLine());
+            System.out.println("Contact:");
+            contact.setContact(bufferedReader.readLine());
 
-        switch (contactType) {
-            case "E": {
-                contact.setContactType(ContactType.EMAIL);
+            switch (contactType) {
+                case "E": {
+                    contact.setContactType(ContactType.EMAIL);
+                }
+                case "M": {
+                    contact.setContactType(ContactType.MOBILE);
+                }
             }
-            case "M": {
-                contact.setContactType(ContactType.MOBILE);
-            }
+        } catch (IOException e) {
+            System.out.println("Error! Invalid input. " + e);
         }
         return contact;
     }
