@@ -2,6 +2,7 @@ package BLL.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 public class Client {
@@ -14,9 +15,11 @@ public class Client {
     private LocalDate dateOfBirth;
     private LocalDateTime memberSince;
     private List<Contact> contacts;
+    private String username;
+    private String password;
 
     public Client(Integer primaryId, String firstName, String lastName, String IDNumber, LocalDate dateOfBirth,
-                  LocalDateTime memberSince, List<Contact> contacts) {
+                  LocalDateTime memberSince, List<Contact> contacts, String username, String password) {
         this.primaryId = primaryId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,6 +27,8 @@ public class Client {
         this.dateOfBirth = dateOfBirth;
         this.memberSince = memberSince;
         this.contacts = contacts;
+        this.username = username;
+        this.password = password;
     }
 
     public Client() {
@@ -66,7 +71,15 @@ public class Client {
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        int year = Integer.parseInt(this.getIDNumber().substring(0, 2));
+        int month = Integer.parseInt(this.getIDNumber().substring(2, 4));
+        int date = Integer.parseInt(this.getIDNumber().substring(4, 6));
+        if (year <= 99 && year > 20) {
+            year = year + 1900;
+        } else {
+            year = year + 2000;
+        }
+        this.dateOfBirth = LocalDate.of(year, Month.of(month), date);
     }
 
     public LocalDateTime getMemberSince() {
@@ -83,5 +96,21 @@ public class Client {
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

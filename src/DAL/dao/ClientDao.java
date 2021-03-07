@@ -8,5 +8,7 @@ public interface ClientDao extends CrudDao<Integer, Client> {
 
     Client findByIDNumber(String idNumber);
 
-    List<Client> findByFirstAndLastName(String firstName,String LastName);
+    List<Client> findByFirstAndLastName(String firstName, String LastName);
+
+    Client findByUsernameAndPassword(String username, String password);
 }

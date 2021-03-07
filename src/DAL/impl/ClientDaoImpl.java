@@ -5,7 +5,7 @@ import DAL.dao.ClientDao;
 
 import java.util.List;
 
-public class ClientDaoImpl extends CrudDaoImpl<Integer,Client> implements ClientDao {
+public class ClientDaoImpl extends CrudDaoImpl<Integer, Client> implements ClientDao {
 
     @Override
     public Client findByIDNumber(String idNumber) {
@@ -17,4 +17,11 @@ public class ClientDaoImpl extends CrudDaoImpl<Integer,Client> implements Client
     public List<Client> findByFirstAndLastName(String firstName, String LastName) {
         return null;
     }
+
+    @Override
+    public Client findByUsernameAndPassword(String username, String password) {
+        return new Client();
+    }
+
+
 }
